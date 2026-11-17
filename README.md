@@ -1,38 +1,287 @@
-# vue-project
+# Vue 학습 기록 — 케이크 상품 관리
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue 3의 기본 문법부터 컴포넌트 분리, 비동기 처리, 라우팅, 상태 공유까지 단계적으로 학습한 프로젝트입니다.
 
-## Recommended IDE Setup
+케이크 상품 관리 화면을 만들면서 조회·등록·삭제·품절 변경·검색·상세 화면을 구현했습니다.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+> 현재는 Promise와 setTimeout을 사용하는 모의 API 기반입니다.
+> 실제 HTTP API, 백엔드 및 DB는 아직 연결하지 않았습니다.
 
-## Recommended Browser Setup
+## 기술 구성
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+| 구분 | 사용 기술 |
+|---|---|
+| 언어 | JavaScript, HTML, CSS |
+| 프레임워크 | Vue 3 |
+| 작성 방식 | Composition API, `<script setup>` |
+| 개발 및 빌드 | Vite |
+| 라우팅 | Vue Router |
+| 상태 관리 | Pinia |
+| 개발 환경 | VS Code, Windows PowerShell, npm |
 
-## Customize configuration
+## 학습 목차
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+JavaScript 기본기를 복습한 뒤, 하나의 화면에 기능을 추가하고 컴포넌트와 composable로 분리했습니다. 이후 라우팅과 Pinia를 적용해 여러 화면에서 상품 상태를 공유했습니다.
 
-## Project Setup
+### 0단계. JavaScript 기본기
 
-```sh
-npm install
+- `const`, `let`과 재할당
+- 객체와 배열
+- 화살표 함수와 반환값
+- 객체·배열 구조 분해 할당
+- spread 문법과 얕은 복사
+- `map`, `filter`, `find`
+- `import`, `export`
+- Promise와 `async/await`
+- `try/catch/finally`
+
+**실습:** 상품 배열에서 값 조회, 복사, 추가, 수정, 삭제하기
+
+※ 이 단계는 Vue 프로젝트 생성 전에 별도로 진행했습니다.
+
+### 1단계. 컴포넌트와 화면 구성
+
+- Vue 단일 파일 컴포넌트(SFC) 구조
+- `<script setup>`, `<template>`, `<style scoped>`
+- `{{ }}`를 이용한 텍스트 출력
+- 데이터와 화면 연결
+
+**실습:** 상품명·가격·설명을 표시하는 카드 만들기
+
+### 2단계. 상태와 이벤트
+
+- `ref`를 이용한 반응형 상태
+- JavaScript에서 `.value`로 값 읽기·변경하기
+- 템플릿에서 ref의 자동 언래핑
+- `@click` 이벤트 처리
+- 상태 변경에 따른 화면 갱신
+
+**실습:** 수량 증감, 최소 수량 제한, 품절 상태 전환
+
+### 3단계. 조건부 렌더링과 목록
+
+- `v-if`, `v-else-if`, `v-else`
+- `v-show`와 `v-if`의 차이
+- `v-for`로 목록 출력
+- `:key`로 항목 식별
+- `v-bind`의 축약 문법 `:`
+- `:disabled`로 버튼 활성화 제어
+
+**실습:** 상품 목록 출력, 품절 안내, 구매 버튼 비활성화
+
+### 4단계. 입력값과 폼
+
+- `v-model`로 입력값과 상태 연결
+- 텍스트·숫자 입력창과 체크박스
+- `@submit.prevent`로 기본 폼 제출 동작 방지
+- 상품명·가격 검증
+- 오류 메시지 표시
+- 입력값과 오류 초기화
+- `submit` 버튼과 `button` 버튼의 차이
+
+**실습:** 상품 등록 폼과 검색어 초기화 기능 구현
+
+### 5단계. 컴포넌트 간 데이터 전달
+
+- 상품 카드를 `ProductCard.vue`로 분리
+- `defineProps`로 상품 데이터 전달받기
+- `defineEmits`로 부모에게 이벤트 보내기
+- 상품 ID를 이벤트 데이터로 전달
+- 데이터 표시와 변경 처리의 역할 구분
+
+**실습:** 카드에서 삭제·품절 변경을 요청하고 부모에서 처리하기
+
+### 6단계. 파생 값 계산
+
+- `computed`로 기존 상태에서 값 계산
+- `filter`와 `includes`를 활용한 상품명 검색
+- `trim`으로 검색어 앞뒤 공백 제거
+- 검색어와 판매 상태 조건 결합
+- 검색 결과 개수와 빈 결과 안내
+
+**실습:** 상품 검색과 ‘판매 중인 상품만 보기’ 필터 구현
+
+### 7단계. 생명주기와 비동기 처리
+
+- `onMounted`에서 초기 상품 조회
+- Promise 기반 모의 API 호출
+- 로딩·오류·조회 완료 화면 구분
+- 실패 후 재시도
+- `finally`에서 로딩 종료
+- `watch`로 검색 결과 개수 감시
+- `document.title` 변경
+- `onUnmounted`에서 원래 제목 복구
+
+**실습:** 조회 실패·복구 흐름과 브라우저 탭 제목 갱신
+
+### 8단계. 로직 재사용
+
+- `useProducts` composable 작성
+- 상품 상태와 관리 함수를 별도 파일로 분리
+- 반환한 상태·함수를 구조 분해해 사용
+- 화면 로직과 상품 관리 로직의 역할 구분
+- 로직 재사용과 상태 공유의 차이 이해
+
+**실습:** 조회·추가·삭제·품절 변경 로직 분리
+
+### 9단계. 라우팅과 공유 상태
+
+- `createRouter`, `createWebHistory`
+- `RouterView`로 경로별 화면 표시
+- `RouterLink`로 페이지 이동
+- `/products/:id` 동적 경로
+- `useRoute`로 상품 ID 읽기
+- `createPinia`로 상태 관리 등록
+- `defineStore`로 상품 스토어 정의
+- `storeToRefs`로 반응성을 유지하며 상태 꺼내기
+- 목록·상세 화면에서 같은 상품 상태 사용
+- 조회 중 중복 호출 및 조회 완료 후 재조회 방지
+
+**실습:** 상세 정보 표시와 화면 이동 시 상품 변경 내용 유지
+
+## 구현 기능
+
+| 기능 | 설명 |
+|---|---|
+| 상품 조회 | 약 1초 지연을 갖는 모의 API에서 초기 상품 조회 |
+| 상품 등록 | 상품명·가격 검증 후 목록에 추가 |
+| 상품 삭제 | 선택한 상품 ID를 기준으로 삭제 |
+| 판매 상태 변경 | 품절 처리와 판매 재개 |
+| 검색 | 상품명 부분 일치 검색 |
+| 필터 | 판매 중인 상품만 표시 |
+| 입력 초기화 | 등록 입력값과 오류 메시지 제거 |
+| 로딩·오류 처리 | 조회 상태별 화면 표시 및 재시도 |
+| 상세 화면 | 상품명·가격·판매 상태 표시 |
+| 공유 상태 | 목록·상세 이동 시 상품 변경 내용 유지 |
+| 탭 제목 | 검색 결과 개수에 따라 제목 갱신 |
+
+구매 버튼은 표시·비활성화 실습용입니다. 실제 주문·결제는 구현하지 않았습니다.
+
+화면 상단의 수량 조절 카드는 별도 상태를 사용하는 기초 실습 영역입니다.
+
+## 화면 경로
+
+| 경로 | 화면 |
+|---|---|
+| `/` | 상품 목록·등록·검색·필터 |
+| `/products/:id` | 상품 상세 |
+
+상세 URL의 ID는 숫자로 변환한 뒤 상품 ID와 비교합니다. 해당 상품이 없으면 안내 문구를 표시합니다.
+
+## 주요 파일
+
+| 파일 | 역할 |
+|---|---|
+| `src/main.js` | Vue 앱 생성, Pinia·Router 등록 |
+| `src/App.vue` | RouterView와 공통 스타일 |
+| `src/router/index.js` | 목록·상세 경로 정의 |
+| `src/views/ProductListView.vue` | 목록, 입력 검증, 검색·필터, 탭 제목 관리 |
+| `src/views/ProductDetailView.vue` | 상품 상세 정보와 조회 상태 표시 |
+| `src/components/ProductCard.vue` | 상품 표시, 상세 링크, 삭제·품절 변경 이벤트 |
+| `src/stores/products.js` | 공유 상품 상태와 관리 함수 |
+| `src/api/products.js` | 성공·실패를 재현하는 모의 API |
+| `src/composables/useProducts.js` | Pinia 도입 전 로직 분리 실습 코드 |
+
+현재 목록·상세 화면은 Pinia 스토어를 사용합니다.
+`useProducts.js`는 이전 학습 과정의 코드로 남겨 두었습니다.
+
+## 학습하며 정리한 개념
+
+### 상태와 파생 값
+
+상품 목록과 검색 조건은 상태로 관리하고, 검색 결과는 `computed`로 계산합니다. 계산 가능한 값을 별도 상태에 중복 저장하지 않습니다.
+
+### props와 emit
+
+자식 카드는 props로 상품을 전달받고, emit으로 변경을 요청합니다. 요청을 받은 부모는 스토어의 관리 함수를 호출합니다.
+
+### computed와 watch
+
+`computed`는 계산 결과를 사용하기 위해, `watch`는 상태 변화에 따른 작업을 수행하기 위해 사용합니다.
+
+검색 결과는 `computed`로 만들고, 브라우저 탭 제목은 `watch`로 변경했습니다.
+
+### 로직 재사용과 상태 공유
+
+상태를 함수 내부에 선언한 composable은 호출마다 독립적인 상태를 만듭니다. Pinia 스토어는 같은 앱의 여러 화면에서 상태를 공유합니다.
+
+### 화면 이동과 새로고침
+
+Pinia로 관리하는 상품은 화면을 이동해도 유지됩니다. 하지만 브라우저를 새로고침하면 메모리가 초기화되므로 모의 API의 초기 상품으로 돌아갑니다.
+
+## 실행 방법
+
+### 요구 환경
+
+`package.json`의 Node.js 요구 범위:
+
+```text
+^22.18.0 || >=24.12.0
 ```
 
-### Compile and Hot-Reload for Development
+### 설치 및 실행
 
-```sh
+```bash
+git clone https://github.com/hxtchhxkxr/Vue.git
+cd Vue
+npm install
 npm run dev
 ```
 
-### Compile and Minify for Production
+터미널에 표시되는 Local 주소로 접속합니다.
 
-```sh
-npm run build
+Windows PowerShell에서 `npm.ps1` 실행 정책 오류가 발생하면 다음처럼 실행합니다.
+
+```powershell
+npm.cmd install
+npm.cmd run dev
 ```
+
+### 빌드 및 미리보기
+
+```bash
+npm run build
+npm run preview
+```
+
+## 실습 중 확인한 동작
+
+- [x] 수량이 1 미만으로 내려가지 않는지 확인
+- [x] 품절 상품의 구매 버튼 비활성화 확인
+- [x] 상품명·가격 검증과 입력 초기화 확인
+- [x] 상품 추가·삭제·품절 변경 확인
+- [x] 검색어와 판매 중 필터 동시 적용 확인
+- [x] 결과 개수와 빈 결과 안내 확인
+- [x] 모의 조회의 로딩·실패·재시도 확인
+- [x] 검색 결과 개수에 따른 탭 제목 변경 확인
+- [x] 목록·상세 이동과 상세 정보 표시 확인
+- [x] 화면 이동 후 상품 변경 내용 유지 확인
+
+위 항목은 학습 중 수동으로 확인한 내용이며, 자동화 테스트는 아직 작성하지 않았습니다.
+
+## 트러블슈팅
+
+| 문제 | 해결 |
+|---|---|
+| PowerShell에서 `npm.ps1` 실행 차단 | `npm.cmd`로 실행 |
+| `package.json`을 찾지 못하는 ENOENT | 프로젝트 루트로 이동 후 명령 실행 |
+| 파일 이동 후 import 오류 | 파일 위치에 맞게 상대 경로 수정 |
+| RouterView가 라우터를 찾지 못함 | `main.js`에 `.use(router)` 등록 |
+| 라우터의 default export 오류 | `export default router` 확인 |
+| Vue 파일 요청이 500으로 실패 | 개발 서버 터미널에서 파일 문법·import 오류 확인 |
+
+## 현재 범위와 다음 학습
+
+### 현재 제한
+
+- 실제 HTTP 요청 대신 모의 API를 사용합니다.
+- 상품 변경은 메모리에만 저장되며 새로고침 시 초기화됩니다.
+- 검색어와 체크박스는 지역 상태로, 목록 화면이 다시 생성되면 초기화됩니다.
+- 실제 주문·결제 기능은 없습니다.
+
+### 다음 학습
+
+- [ ] `fetch`로 JSON 조회 및 HTTP 응답·오류 처리
+- [ ] Spring Boot 상품 API 연동
+- [ ] 상품 조회·등록·삭제와 DB 저장
+- [ ] `reactive`, `slot` 등 추가 Vue 개념 실습
